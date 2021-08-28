@@ -1,0 +1,239 @@
+
+/* question form css */
+.question-form-container {
+   font-family: 'Google Sans',Roboto,Arial,sans-serif;
+}
+.question-form{
+   background-color:#F4F4F9;
+   height:100%;
+   padding-bottom:30px;
+}
+
+.section{
+   margin: auto;
+   width:50%;
+}
+
+.question-form-top{
+   background-color: white;
+   border-top:8px solid rgb(103, 58, 183);
+   border-radius: 8px;
+   padding:30px 25px;
+   text-transform: capitalize;
+}
+
+.question-form-top-name{
+   box-sizing: border-box;
+   font-size: 30px;
+   font-weight: 400;
+   line-height: 135%;
+   width: 100%;
+   border:none;
+   outline:none;
+   border-bottom:1px solid #F4F4F9;
+   color:black;
+   height:35px;
+}
+
+.question-form-top-desc{
+   box-sizing: border-box;
+    margin-top: 10px;
+   font-size: 13px;
+   font-weight: 400;
+   line-height: 40px;
+   width: 100%;
+   border:none;
+   outline:none;
+   border-bottom:1px solid #F4F4F9;
+   color:black;
+   height:20px;
+}
+
+.question-boxes{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+}
+
+.add-question{
+   background-color: white; 
+   padding:10px;
+   display: flex;
+   flex-direction: column;
+   padding-bottom:10px;
+   padding-top:0px;
+   width:95%;
+   margin-left:10px;
+}
+
+.add-question-top{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+}
+.question{
+   box-sizing: border-box;
+   margin-top: 10px;
+  font-size: 20px;
+  font-weight: 400; 
+  flex:1;
+  width: 40%;
+  border:none;
+  outline:none;
+  color:black;
+  height:40px;
+  margin-right: 10px;
+  padding:10px;
+}
+
+.top-header{
+   font-Size:15px;
+   color:grey;
+  margin-Left:5px;
+  font-weight: 400;
+}
+.points{
+   box-sizing: border-box;
+  font-size: 15px;
+  font-weight: 400;
+  width:8%;
+  border:1px solid blue;
+  outline:none;
+  color:black;
+  height:40px;
+  margin-right: 10px;
+  line-height: 10px;
+  padding:4px;
+}
+
+.question:focus{
+   border-bottom:1px solid rgb(103, 58, 183);
+   background-color:#F4F4F9;
+}
+
+.select{
+   height:40px;
+   width:230px;
+   padding:5px 15px;
+   color:black;
+   margin-left:10px;
+   margin-right:10px;
+   border:1px solid white;
+   border-radius:1px;
+   background:white;
+}
+
+.menuitem{
+ color: rgba(118, 118, 118, 0.3);
+}
+
+.add-footer{
+   display:flex;
+   justify-content: space-between;
+}
+.add-question-bottom{
+   margin-top:12px;
+   border-top:1px solid rgba(118, 118, 118, 0.3);
+   display:flex;
+   justify-content: flex-end;
+   align-items: center;
+}
+
+.add-question-bottom-left{
+   margin-top:12px;
+   border-top:1px solid rgba(118, 118, 118, 0.3);
+   display:flex;
+   justify-content: flex-end;
+   align-items: center;
+}
+
+
+.add-question-body{
+   display:flex;
+   align-items: center;
+}
+
+.text-input{
+   outline:none;
+   border:none;
+   height:40px;
+   width:450px;
+   font-size: 15px;
+   font-weight: 300;
+   letter-spacing: .2px;
+   color: black;
+}
+
+.text-input:focus{
+   border-bottom:1px solid rgb(103, 58, 183);
+}
+
+.question-edit{
+   background-color:#F4F4F9;
+   display:flex;
+   flex-direction: column;
+   margin-right:12px;
+   margin-top: 10px;
+   margin-bottom: 0;
+   padding:1px;
+   border-radius:3px;
+   height:50px;
+   width:35px;
+}
+
+.edit{
+   color:#5f6368;
+   padding:8px 5px; 
+}
+
+.saved-questions
+{
+   background-color: white;
+   border-radius: 8px;
+   padding:20px 2px;
+   text-transform: capitalize;
+   display:flex;
+   flex-direction: column;
+}
+
+.add_border{
+   border-left:6px solid #4285f4;
+}
+
+.save-form{
+   margin:15px;
+}
+
+.paragraph-item {
+   margin-left:6px;
+   margin-right:10px
+}
+
+.checkbox-item {
+   margin-left:6px;
+   margin-right:10px;
+   color:gray;
+}
+.radiobtn-item {
+   /* style={{marginRight:"10px",color:"#70757a"}} */
+   margin-right:10px;
+   color:gray;
+}
+.quesion-body-type {
+   margin-right:10px;
+}
+.add-option-input {
+   /* style={{fontSize:"13px",width:"60px"}}  */
+   font-size:13px;
+   width:60px;
+}
+.add-option-btn {
+   /* style={{textTransform: 'none',color:"#4285f4",fontSize:"13px",fontWeight:"600"}}> */
+   font-size: 13px;
+   font-weight: 600
+}
+.required-btn{
+   /* style={{color:"#5f6368",fontSize:"13px"}}> */
+   font-size:13px
+}

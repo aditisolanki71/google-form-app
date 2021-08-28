@@ -2,7 +2,41 @@ import React from "react"
 import Button from '@material-ui/core/Button';
 import uuid from "react-uuid"
 import { useHistory } from "react-router-dom"
-function Header() {
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { withStyles,makeStyles } from '@material-ui/core/styles';
+import "./header.css"
+const StyledTableCell = withStyles((theme) => ({
+   head: {
+     backgroundColor: theme.palette.common.black,
+     color: theme.palette.common.white,
+   },
+   body: {
+     fontSize: 14,
+   },
+ }))(TableCell);
+ 
+ const StyledTableRow = withStyles((theme) => ({
+   root: {
+     '&:nth-of-type(odd)': {
+       backgroundColor: theme.palette.action.hover,
+     },
+   },
+ }))(TableRow);
+
+const useStyles = makeStyles({
+   table: {
+     minWidth: 650,
+   },
+ });
+ 
+const Header = () =>  {
+   const classes = useStyles();
    const history = useHistory()
    let total_response = localStorage.getItem('response_array')
    try {
@@ -18,15 +52,56 @@ function Header() {
    }
    
    let formData = localStorage.getItem('form_data')
+   try {
+      if(formData.length > 0)
+      {
+         formData = JSON.parse(formData);
+      }
+   } catch(e) {
+      console.log('err',e)
+   }
+   if(!formData) {
+      formData = [];
+   }
    const createform = () => {
       const id = uuid()
       history.push("/form/"+id);
    }
 
    return (
-      <div className="header">
-         <Button onClick={createform} variant="contained">Add Form</Button>
-         <span>total response is {total_response?.length}</span>
+      <div>
+         <div className="header">
+            {/* <span className="total-response-text">Total Response is : {total_response?.length}</span> */}
+            <span className="total-response-text">Total Response is : {formData?.length}</span>
+            <Button onClick={createform} variant="contained" color="primary">Add Form</Button>
+         </div>
+         <div className="container">
+            <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+               <TableRow>
+                  <StyledTableCell>UUid</StyledTableCell>
+                  <StyledTableCell>Name</StyledTableCell>
+                  <StyledTableCell>Description</StyledTableCell> 
+               </TableRow>
+            </TableHead>
+            <TableBody>
+               {formData.map((row) => (
+                  <StyledTableRow key={row.uuid}>
+                  <StyledTableCell component="th" scope="row">
+                     {row.uuid}
+                  </StyledTableCell>
+                  <StyledTableCell component="th" scope="row">
+                     {row.form_name}
+                  </StyledTableCell>
+                  <StyledTableCell>{row.form_description}</StyledTableCell>
+                  </StyledTableRow>
+               ))}
+            </TableBody>
+            </Table>
+         </TableContainer>
+      
+         </div>
       </div>
    )
 }

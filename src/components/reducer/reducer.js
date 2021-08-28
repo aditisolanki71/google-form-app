@@ -6,13 +6,13 @@ export const initialState = {
 }
 
 export const actionTypes = {
-     SET_QUESTION:"SET_QUESTIONS",
+    SET_QUESTIONS:"SET_QUESTIONS",
 }
 
 const reducer = (state = initialState, action)=>{
    console.log(action);
    switch(action.type){
-       case actionTypes.SET_QUESTION : 
+       case actionTypes.SET_QUESTIONS : 
            return {
                ...state,
                 questions:action.payload.questions,

@@ -19,28 +19,31 @@ import Switch from '@material-ui/core/Switch';
 import {BsTrash} from "react-icons/bs"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useParams } from "react-router";
+import { useHistory } from 'react-router-dom';
 import { actionTypes } from '../../reducer/reducer'
 import { useStateValue } from '../../store/stateprovider'
 import uuid from "react-uuid"
 import './questions-form.css'
 function QuestionForm() {
+     var history = useHistory()
    const [questions,setQuestions] =useState([
-      {
-         questionName: "what is your name",
-         questionType: "radio",
-         options: [
-               {optionName: "name1"},
-               {optionName: "name2"},
-               {optionName: "name3"}],
-         open:true,
-         required:false,
-         answer:false,
-         answerKey:"",
-         point:0
-      }]
+      // {
+      //    questionName: "what is your name",
+      //    questionType: "radio",
+      //    options: [
+      //          {optionName: "name1"},
+      //          {optionName: "name2"},
+      //          {optionName: "name3"}],
+      //    open:true,
+      //    required:false,
+      //    answer:false,
+      //    answerKey:"",
+      //    point:0
+      // }
+   ]
    ); 
 
-   const [documentName,setDocName] =useState("untitled Document"); 
+   const [documentName,setDocName] =useState("Add Document Name"); 
    const [documentDescription,setDocDesc] =useState("Add Description"); 
    let { id } = useParams();
 
@@ -97,15 +100,9 @@ function QuestionForm() {
         setQuestions(qs)
    }
 
-   const requiredQuestion = (que_index) => {
-      var requiredQuestion = [...questions];
-      requiredQuestion[que_index].required =  ! requiredQuestion[que_index].required
-      setQuestions(requiredQuestion)
-   }
-
    function addMoreQuestionField(){
       setQuestions(questions => [...questions, {
-            questionName: "Question",
+            questionName: "Add Question",
             questionType:"radio", 
             options : [{optionName: "Option 1"}], 
             open: true, 
@@ -128,10 +125,26 @@ function QuestionForm() {
                doc_desc:documentDescription
             }
           })
-          localStorage.setItem('form_data',JSON.stringify({uuid:uuid(),
+          let getData = localStorage.getItem('form_data')
+          try {
+            if(getData.length > 0)
+            {
+               getData = JSON.parse(getData);
+            }
+         } catch(e) {
+            console.log('err',e)
+         }
+         if(!getData) 
+         {
+            getData = [];
+         }
+   
+          localStorage.setItem('form_data',JSON.stringify([...getData,{uuid:uuid(),
                                                             form_name:documentName,
                                                             form_description:documentDescription
-                                                         }))
+                                                         }]))
+         alert("Your Form has been designed")
+         history.push("/response")
       }
       const question = () => {
          return questions && questions.map((q,i) => (
@@ -189,9 +202,8 @@ function QuestionForm() {
                         value={q.questionName}
                         onChange={(e)=>{handleQuestionValue(e.target.value, i)}}
                      />
-                        <CropOriginalIcon style={{color:'gray'}} />
                         {/* question type dropdown */}
-                           <Select className="select" style={{color:"gray",fontSize:"10px"}} >
+                           <Select placeholder="select question type" className="select" style={{color:"gray",fontSize:"20px"}} >
                               <MenuItem 
                                  id="text" 
                                  value="Text" 
@@ -304,19 +316,6 @@ function QuestionForm() {
                         <IconButton aria-label="delete" onClick={()=>{deleteQuestion(i)}}>
                                <BsTrash />
                         </IconButton>
-                        <span 
-                           // style={{color:"#5f6368",fontSize:"13px"}}
-                           className="required-btn"
-                           >
-                           Required </span> 
-                           <Switch 
-                              name="checkedA" 
-                              color="primary"
-                              checked={q.required}
-                              onClick={()=>{requiredQuestion(i)}}
-                              />
-                           <IconButton>
-                        </IconButton>
                      </div>
                   </div>
 
@@ -352,6 +351,14 @@ function QuestionForm() {
                onChange={(e)=>{setDocDesc(e.target.value)}} 
             />
          </div>
+      </div>
+      <div className="question-edit">
+         {questions && questions.length < 1 ? (
+            <div class="default-add-question" onClick={addMoreQuestionField}>
+               <AddCircleOutlineIcon className="edit" />
+               <span className="text">Add</span>
+            </div>)
+            : ''}
       </div>
       {question()}
       <div className="save-form">

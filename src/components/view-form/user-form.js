@@ -9,7 +9,7 @@ const User_form = () => {
    var history = useHistory()
    var [answer,setAnswer] = useState([])
    var [{questions,doc_name,doc_desc},dispatch] = useStateValue()
- 
+   
    // handle event for radio type
    const select = (que,option) => {
    var k =answer.findIndex((ele)=>(ele.question == que))
@@ -60,10 +60,9 @@ const User_form = () => {
 
    //submit event
       const submit = () => {
-      // localStorage.setItem('response_array',JSON.stringify(answer))
+       localStorage.setItem('response_array',JSON.stringify(answer))
       
       let total_response = localStorage.getItem('response_array')
-      console.log('total_Res',total_response)
       try {
          if(total_response.length > 0)
          {
@@ -78,7 +77,7 @@ const User_form = () => {
       }
 
       localStorage.setItem('response_array',JSON.stringify([...total_response,{answer:answer,docname: doc_name,docdesc:doc_desc}]))
-      alert("your response has been submitted successfully")
+       alert("your response has been submitted successfully")
       history.push(`/`)
    }
 
@@ -155,9 +154,6 @@ const User_form = () => {
             <div className="user-form-submit">
                <Button  variant="contained" color="primary" onClick={submit} style={{fontSize:"14px"}}>Submit</Button>
             </div>  
-            <div className="user-footer">
-                Google Forms
-            </div>
             </div>
         </div>
         </div>

@@ -19,8 +19,8 @@ function FormTabs() {
                onChange={handleChange}
                aria-label="disabled tabs example"
                >
-                  <Tab label="questions" />
-                  <Tab label="Responses" disabled />
+                  <Tab label="Create your own Form" />
+                  {/* <Tab label="Responses" disabled /> */}
                </Tabs>
             </Paper>
          </div>

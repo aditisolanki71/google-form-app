@@ -182,6 +182,17 @@
    width:35px;
 }
 
+.default-add-question {
+   background-color:#F4F4F9;
+   display:flex;
+   flex-direction: row;
+   height:50px;
+   width:50px;
+}
+.text {
+   margin-top: 10px;
+}
+
 .edit{
    color:#5f6368;
    padding:8px 5px; 

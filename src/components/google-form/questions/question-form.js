@@ -18,7 +18,11 @@ import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import Switch from '@material-ui/core/Switch';
 import {BsTrash} from "react-icons/bs"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
- import './questions-form.css'
+import { useParams } from "react-router";
+import { actionTypes } from '../../reducer/reducer'
+import { useStateValue } from '../../store/stateprovider'
+import uuid from "react-uuid"
+import './questions-form.css'
 function QuestionForm() {
    const [questions,setQuestions] =useState([
       {
@@ -33,18 +37,14 @@ function QuestionForm() {
          answer:false,
          answerKey:"",
          point:0
-      },
-      {
-         questionName: "what are you from",
-         questionType: "radio",
-         options: [
-            {optionName: "city1"},
-            {optionName: "city2"},
-            {optionName: "city3"}],
-         open:true,
-         required:false
       }]
    ); 
+
+   const [documentName,setDocName] =useState("untitled Document"); 
+   const [documentDescription,setDocDesc] =useState("Add Description"); 
+   let { id } = useParams();
+
+   const [{}, dispatch] = useStateValue();
 
    /*User change question Title  at the time of creation*/
    const handleQuestionValue = (que,i) => {
@@ -119,6 +119,20 @@ function QuestionForm() {
       //    setQuestions(answerOfQuestion)
       //  }
   
+      const handleSave = () => {
+         dispatch({
+           type: actionTypes.SET_QUESTIONS,
+            payload : {
+               questions:questions,
+               doc_name:documentName,
+               doc_desc:documentDescription
+            }
+          })
+          localStorage.setItem('form_data',JSON.stringify({uuid:uuid(),
+                                                            form_name:documentName,
+                                                            form_description:documentDescription
+                                                         }))
+      }
       const question = () => {
          return questions && questions.map((q,i) => (
             <Accordion 
@@ -153,15 +167,7 @@ function QuestionForm() {
                                           required={q.type}
                                           />}
                                     label={
-                                    <Typography 
-                                       style={{
-                                       fontFamily:' Roboto,Arial,sans-serif',
-                                       // fontSize:' 13px',
-                                       // fontWeight: '400',
-                                       // letterSpacing: '.2px',
-                                       // lineHeight: '20px',
-                                       // color: '#202124'
-                                       }}>
+                                    <Typography>
                                        {q.options[j].optionName}
                                     </Typography>
                                     } 
@@ -334,20 +340,30 @@ function QuestionForm() {
                className="question-form-top-name"
                style={{color:"black"}}
                placeholder="Form Name"
-               //placeholder={documentName}
-               // value={documentName}
-               // onChange={(e)=>{setDocName(e.target.value)}}
+               placeholder={documentName}
+               value={documentName}
+               onChange={(e)=>{setDocName(e.target.value)}}
             />
              <input type="text" 
                className="question-form-top-desc" 
                placeholder="Form Description" 
-               //placeholder={documentDescription} 
-               // value={documentDescription} 
-               // onChange={(e)=>{setDocDesc(e.target.value)}} 
+               placeholder={documentDescription} 
+               value={documentDescription} 
+               onChange={(e)=>{setDocDesc(e.target.value)}} 
             />
          </div>
       </div>
       {question()}
+      <div className="save-form">
+            <Button 
+               variant="contained" 
+               color="primary" 
+               onClick={handleSave} 
+               style={{fontSize:"14px"}}
+            >
+            Save
+            </Button>
+      </div>
       </div>
       </div>
       </div>

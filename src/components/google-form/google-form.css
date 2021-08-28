@@ -1,0 +1,14 @@
+/* form header css */
+.form-header-container{
+   display:flex;
+   align-items: center;
+   justify-content: space-between;
+   margin:5px 15px;
+   background-color: #fff;
+}
+
+.form-header-left{
+   display:flex;
+   align-items: center;
+   justify-content: space-evenly;
+}

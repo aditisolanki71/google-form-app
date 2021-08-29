@@ -10,6 +10,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles,makeStyles } from '@material-ui/core/styles';
+import {  IconButton } from '@material-ui/core'
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import "./header.css"
 const StyledTableCell = withStyles((theme) => ({
    head: {
@@ -52,6 +54,9 @@ const Header = () =>  {
       formData = [];
    }
 
+   const handleView = (data) => {
+      history.push(`/form/${data.uuid}`)
+   }
    // Get Submitted Response Count from localstorage
    let submiitedResponseCount = localStorage.getItem('submitted_respose_count')
    const createform = () => {
@@ -74,7 +79,8 @@ const Header = () =>  {
                <TableRow>
                   <StyledTableCell>UUID</StyledTableCell>
                   <StyledTableCell>Name</StyledTableCell>
-                  <StyledTableCell>Description</StyledTableCell> 
+                  <StyledTableCell>Description</StyledTableCell>
+                  <StyledTableCell>Action</StyledTableCell> 
                </TableRow>
             </TableHead>
             <TableBody>
@@ -87,12 +93,16 @@ const Header = () =>  {
                      {row.form_name}
                   </StyledTableCell>
                   <StyledTableCell>{row.form_description}</StyledTableCell>
+                  <StyledTableCell>
+                     <IconButton target="blank" onClick={() => handleView(row)}>
+                        <VisibilityIcon className="form-header-icon" />
+                     </IconButton>
+                     </StyledTableCell>
                   </StyledTableRow>
                ))}
             </TableBody>
             </Table>
          </TableContainer>
-      
          </div>
       </div>
    )

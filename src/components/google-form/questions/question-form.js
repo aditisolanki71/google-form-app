@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { Accordion } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -14,12 +14,13 @@ import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import {BsTrash} from "react-icons/bs"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import FormControl from '@material-ui/core/FormControl';
+import Modal from '@material-ui/core/Modal';
+import { useDispatch} from "react-redux"
 import { useParams } from "react-router";
 import { useHistory } from 'react-router-dom';
-import FormControl from '@material-ui/core/FormControl';
-import { useDispatch} from "react-redux"
+import {BsTrash} from "react-icons/bs"
 import uuid from "react-uuid"
 import './questions-form.css'
 
@@ -32,9 +33,29 @@ function QuestionForm() {
    const [questions,setQuestions] =useState([]); 
    const [documentName,setDocName] =useState("Add Document Name"); 
    const [documentDescription,setDocDesc] =useState("Add Description"); 
+   const [open,setOpen] = useState(false)
 
    let { id } = useParams();
-
+   
+   useEffect(() => {
+      let googleFormData = localStorage.getItem('form_data');
+      try {
+         if(googleFormData.length > 0) {
+            googleFormData = JSON.parse(googleFormData);
+         }
+      } catch(e) {
+         console.log('err',e)
+      }
+      if(!googleFormData) {
+         googleFormData = [];
+      }
+      const getFormData = googleFormData ? googleFormData.find((g) => g.uuid === id) : ''
+      if(getFormData) {
+         setQuestions(getFormData.questions)
+         setDocName(getFormData.form_name)
+         setDocDesc(getFormData.form_description)
+      }
+   },[])
    /*User change question Title  at the time of creation*/
    const handleQuestionValue = (que,i) => {
       setQuestions([...questions],questions[i].questionName = que)
@@ -138,12 +159,14 @@ function QuestionForm() {
    
           localStorage.setItem('form_data',JSON.stringify([...getData,{uuid:uuid(),
                                                             form_name:documentName,
-                                                            form_description:documentDescription
+                                                            form_description:documentDescription,
+                                                            questions:questions
                                                          }]))
-         alert("Your Form has been designed")
+         setOpen(true);
+         alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/form/${id}`)
 
          //After Designed Form redirect ro response page so that user get main question form
-         history.push("/response")
+         history.push(`/response/${id}`)
       }
 
       //On click of Cancel user redirect to home page

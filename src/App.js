@@ -12,7 +12,7 @@ function App() {
         {/* Design your own google form */}
         <Route path="/form/:id" exact component={GoogleForm} />
         {/* User get Designed form question List*/}
-        <Route path="/response" exact component={UserForm} />
+        <Route path="/response/:id" exact component={UserForm} />
         {/* Form Listing Default Page */}
         <Route path="/" exact component={Header} />
         <Route exact component={NotFound} />

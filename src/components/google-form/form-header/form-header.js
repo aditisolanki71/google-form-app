@@ -2,15 +2,17 @@ import React from "react"
 import {  IconButton } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useHistory } from 'react-router-dom';
+import { useParams } from "react-router";
 import image from "../../../../src/google-form-logo.png";
 import "../../google-form/google-form.css"
 
 function FormHeader() {
    const history = useHistory();
+   let { id } = useParams();
 
    // Form Submit than navigate to view question page
    const navigates = () => {
-      history.push("/response")
+      history.push(`/response/${id}`)
   }
    return (
       // Header of Google Form Design

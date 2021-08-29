@@ -11,7 +11,7 @@ const UserForm = () => {
    // Store answer in state
    var [answer,setAnswer] = useState([])
 
-   //Fetch DocName and DocDescription from Redux
+   //Fetch Questions ,DocName and DocDescription from Redux
    const questions = useSelector((state) => state.questions)
    const doc_name = useSelector((state) => state.doc_name)
    const doc_desc = useSelector((state) => state.doc_desc)
@@ -86,7 +86,7 @@ const UserForm = () => {
       else {
          localStorage.setItem('submitted_respose_count',parseInt(response_count)+1)
       }
-      alert("your response has been submitted successfully")
+      alert("Your Response has been submitted successfully")
 
       //After form submit redirect to home page
       history.push(`/`)
@@ -107,7 +107,7 @@ const UserForm = () => {
                     <Typography style={{fontSize:"15px"}} >{doc_desc}</Typography>
                 </div>
                 {/* question and option */}
-                {
+                {questions.length > 1 ?
                   questions.map((question,qindex)=>(
                      <div className="user-form-questions">
                         <Typography 
@@ -166,16 +166,18 @@ const UserForm = () => {
                     }
                   </div>
                 ))
-            }
+            : (<div>Create your Form and Submit than you can view Form</div>)}
 
             {/* Form Action */}
             <div className="user-form-submit">
+            {questions.length > 1 ?
                <Button
                   variant="contained"
                   color="primary"
                   onClick={submit}
                   style={{fontSize:"14px"}}
                >Submit</Button>
+            : ""}
                <Button 
                   variant="contained" 
                   color="gray" 

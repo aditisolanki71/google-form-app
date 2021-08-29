@@ -7,14 +7,18 @@ import "../../google-form/google-form.css"
 
 function FormHeader() {
    const history = useHistory();
+
+   // Form Submit than navigate to view question page
    const navigates = () => {
       history.push("/response")
   }
    return (
+      // Header of Google Form Design
       <div className="form-header-container">
          <div className="form-header-left">
          <img src={image} style={{height:"45px",width:"40px"}}/>
          </div>
+         {/* Once Form Design is done User Can view Question List */}
          <div className="form-header-right">
             <IconButton target="blank" onClick={navigates}>
                <VisibilityIcon className="form-header-icon" />

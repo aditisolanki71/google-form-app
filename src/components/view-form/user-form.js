@@ -1,21 +1,20 @@
 import { Button, Typography } from '@material-ui/core'
 import React ,{useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
-import { useStateValue } from '../store/stateprovider';
+import { useSelector} from "react-redux"
 import "./user-form.css"
 
-const User_form = () => {
+const UserForm = () => {
    var quest = [];
    var history = useHistory()
-   var [answer,setAnswer] = useState([])
-   var [{questions,doc_name,doc_desc},dispatch] = useStateValue()
 
-   // handle event for radio type
-   const select = (que,option) => {
-      var k =answer.findIndex((ele)=>(ele.question == que))
-      answer[k].answer=option
-      setAnswer(answer)
-  }
+   // Store answer in state
+   var [answer,setAnswer] = useState([])
+
+   //Fetch DocName and DocDescription from Redux
+   const questions = useSelector((state) => state.questions)
+   const doc_name = useSelector((state) => state.doc_name)
+   const doc_desc = useSelector((state) => state.doc_desc)
 
    useEffect(() => {
       questions.map((q)=>{
@@ -29,6 +28,12 @@ const User_form = () => {
       })
    },[])
 
+   // handle event for radio type
+   const select = (que,option) => {
+      var k =answer.findIndex((ele)=>(ele.question == que))
+      answer[k].answer=option
+      setAnswer(answer)
+   }
 
    // handle event for text type
    const selectinput = (que,option) => {
@@ -41,16 +46,11 @@ const User_form = () => {
    const selectcheck = (e,que,option) => {
       var d =[]
       var k =answer.findIndex((ele)=>(ele.question == que))
-      if(answer[k].answer)
-      {
+      if(answer[k].answer) {
          d=answer[k].answer.split(",")
-      }
-      if(e == true)
-      {
+      } if(e == true) {
          d.push(option)
-      }
-      else
-      {
+      } else {
          var n=d.findIndex((el)=>(el.option == option))
          d.splice(n,1)
       }
@@ -58,24 +58,26 @@ const User_form = () => {
       setAnswer(answer)
    }
 
-   //submit event
+      //submit event
       const submit = () => { 
-       localStorage.setItem('response_array',JSON.stringify(answer))
-      let total_response = localStorage.getItem('response_array')
-      try {
-         if(total_response.length > 0)
-         {
-            total_response = JSON.parse(total_response);
+         //set Answer Data in localstorage
+         localStorage.setItem('response_array',JSON.stringify(answer))
+         let total_response = localStorage.getItem('response_array')
+         try {
+            if(total_response.length > 0) {
+               total_response = JSON.parse(total_response);
+            }
+         } catch(e) {
+            console.log('err',e)
          }
-      } catch(e) {
-         console.log('err',e)
-      }
-      if(!total_response) 
-      {
-         total_response = [];
-      }
+         if(!total_response) {
+            total_response = [];
+         }
 
+      //set Response Array data in localstorage
       localStorage.setItem('response_array',JSON.stringify([...total_response,{answer:answer,docname: doc_name,docdesc:doc_desc}]))
+      
+      //set Response Count NUmber in localstorage
       var response_count = localStorage.getItem('submitted_respose_count')
        if(!response_count) {
          response_count = 0
@@ -85,9 +87,12 @@ const User_form = () => {
          localStorage.setItem('submitted_respose_count',parseInt(response_count)+1)
       }
       alert("your response has been submitted successfully")
+
+      //After form submit redirect to home page
       history.push(`/`)
    }
 
+   //Cancel click redirect to home page
    const handleCancel = () => {
       history.push("/")
    }
@@ -96,7 +101,7 @@ const User_form = () => {
       <div className="submit">
         <div className="user-form">
             <div className="user-form-section">
-               {/* document name and description fetch */}
+               {/* document name and description */}
                 <div className="user-title-section">
                     <Typography style={{fontSize:"26px"}} >{doc_name}</Typography>
                     <Typography style={{fontSize:"15px"}} >{doc_desc}</Typography>
@@ -162,6 +167,8 @@ const User_form = () => {
                   </div>
                 ))
             }
+
+            {/* Form Action */}
             <div className="user-form-submit">
                <Button
                   variant="contained"
@@ -176,11 +183,11 @@ const User_form = () => {
                   style={{fontSize:"14px", marginLeft: "10px"}}
                >Cancel</Button>
             </div>  
-            </div>
+         </div>
         </div>
-        </div>
+      </div>
     )
 }
 
-export default User_form
+export default UserForm
 

@@ -9,10 +9,11 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
+        {/* Design your own google form */}
         <Route path="/form/:id" exact component={GoogleForm} />
-        <Route path="/response">
-                 <UserForm />
-        </Route>
+        {/* User get Designed form question List*/}
+        <Route path="/response" exact component={UserForm} />
+        {/* Form Listing Default Page */}
         <Route path="/" exact component={Header} />
         <Route exact component={NotFound} />
         </Switch>

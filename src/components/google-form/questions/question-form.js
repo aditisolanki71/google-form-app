@@ -19,32 +19,31 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useParams } from "react-router";
 import { useHistory } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
-import { actionTypes } from '../../reducer/reducer'
-import { useStateValue } from '../../store/stateprovider'
+import { useDispatch} from "react-redux"
 import uuid from "react-uuid"
 import './questions-form.css'
-function QuestionForm() {
-     var history = useHistory()
-   const [questions,setQuestions] =useState([]
-   ); 
 
+function QuestionForm() {
+
+   var history = useHistory()
+   const dispatch = useDispatch()
+
+   // Take questions ,Document Name and Document Description in state
+   const [questions,setQuestions] =useState([]); 
    const [documentName,setDocName] =useState("Add Document Name"); 
    const [documentDescription,setDocDesc] =useState("Add Description"); 
-   let { id } = useParams();
 
-   const [{}, dispatch] = useStateValue();
+   let { id } = useParams();
 
    /*User change question Title  at the time of creation*/
    const handleQuestionValue = (que,i) => {
       setQuestions([...questions],questions[i].questionName = que)
-
    }
 
    /*User change question Type at the time of creation*/
    const handleQuestionType = (i,type) => {
       setQuestions([...questions],questions[i].questionType  = type)
-      if(type === 'text') 
-      {
+      if(type === 'text') {
          var que = [...questions];
          que[i].options.length = 1; 
          setQuestions(que);
@@ -54,41 +53,40 @@ function QuestionForm() {
     /*User change Option Name at the time of creation*/
    const handleOptionValue = (option,que_index,opt_index,que_type) => {
       var optionQuestion = [...questions];
-      if(que_type == 'text') 
-      {
+      if(que_type == 'text') {
          optionQuestion[que_index].options[0].optionName = option
-      }
-      else {
+      } else {
          optionQuestion[que_index].options[opt_index].optionName = option
       }
       setQuestions(optionQuestion);
    }
 
-   function removeOption(que_index, opt_index){
+   // User can remove Option when click on cross icon
+   const removeOption = (que_index, opt_index) => {
       var optionsOfQuestion = [...questions];
-      if(optionsOfQuestion[que_index].options.length > 1)
-      {
+      if(optionsOfQuestion[que_index].options.length > 1) {
         optionsOfQuestion[que_index].options.splice(opt_index, 1);
         setQuestions(optionsOfQuestion)
       }   
     }
   
-    //max 5 option
-   function addOption(que_index){
+    //User can add till max 5 option
+   const addOption = (que_index) => {
       var optionsOfQuestion = [...questions];
-      if(optionsOfQuestion[que_index].options.length < 5)
-      {
+      if(optionsOfQuestion[que_index].options.length < 5) {
         optionsOfQuestion[que_index].options.push({optionName: "Option " + (optionsOfQuestion[que_index].options.length + 1)})
       }
       setQuestions(optionsOfQuestion)
     }
 
+   // User Can create copy of question 
    const copyQuestion = (que_index) => {
       let qs = [...questions]
       var newQuestion = qs[que_index]
       setQuestions([...questions, newQuestion])
    }
 
+   // User can delete whole question box
    const deleteQuestion = (que_index) => {
       let qs = [...questions]; 
         if(questions.length > 1){
@@ -97,7 +95,8 @@ function QuestionForm() {
         setQuestions(qs)
    }
 
-   function addMoreQuestionField(){
+   // User can add whole question box and here set default value
+   const addMoreQuestionField = () => {
       setQuestions(questions => [...questions, {
             questionName: "Add Question",
             questionType: "radio", 
@@ -113,26 +112,27 @@ function QuestionForm() {
       //    setQuestions(answerOfQuestion)
       //  }
   
+      // When user click on save ,dispatch SET_QUESTIONS_ASYNC
       const handleSave = () => {
-         dispatch({
-           type: actionTypes.SET_QUESTIONS,
+          dispatch({
+           type: 'SET_QUESTIONS_ASYNC',
             payload : {
                questions:questions,
                doc_name:documentName,
                doc_desc:documentDescription
             }
           })
+
+          // Store FormName ,Description and uuid in localstorage that is used in home page for list
           let getData = localStorage.getItem('form_data')
           try {
-            if(getData.length > 0)
-            {
+            if(getData.length > 0) {
                getData = JSON.parse(getData);
             }
          } catch(e) {
             console.log('err',e)
          }
-         if(!getData) 
-         {
+         if(!getData) {
             getData = [];
          }
    
@@ -141,12 +141,17 @@ function QuestionForm() {
                                                             form_description:documentDescription
                                                          }]))
          alert("Your Form has been designed")
+
+         //After Designed Form redirect ro response page so that user get main question form
          history.push("/response")
       }
 
+      //On click of Cancel user redirect to home page
       const handleCancel = () => {
          history.push("/")
       }
+
+      // Question Box
       const question = () => {
          return questions && questions.map((q,i) => (
             <Accordion 
@@ -162,11 +167,13 @@ function QuestionForm() {
                   >
                     {questions && !questions[i].open ? (
                         <div className="saved-questions">
+                        {/* Question Name */}
                         <Typography
                          style={{fontSize:"15px",fontWeight:"400",lineHeight:'24px',paddingBottom:"8px"}} 
                          >
                            {i+1}.  {q.questionName}
                          </Typography>
+                         {/* Question Option */}
                            {q.options.map((op,j) => (
                               <div key={j}>
                                <div style={{display: 'flex',}}>
@@ -196,6 +203,7 @@ function QuestionForm() {
             <div className="question-boxes"> 
                <AccordionDetails className="add-question">
                   <div className="add-question-top">
+                     {/* Question Name */}
                      <input 
                         type="text"
                         className="question"
@@ -234,6 +242,7 @@ function QuestionForm() {
                            </Select>
                      </FormControl>
                   </div>   
+                  {/* Options of Questions */}
                   {q.options.map((op, j)=>(
                      <div className="add-question-body" key={j}>
                      {/* question type */}
@@ -256,7 +265,7 @@ function QuestionForm() {
                               onChange={(e)=>{handleOptionValue(e.target.value, i, j,q.questionType)}}
                            />
                         </div>
-                        {/* <CropOriginalIcon style={{color:"#5f6368"}}/> */}
+                        {/* Delete Option icon */}
                            <IconButton aria-label="delete" onClick={()=>{removeOption(i, j)}}>
                               <CloseIcon />
                            </IconButton>
@@ -302,7 +311,7 @@ function QuestionForm() {
                      </div>)
                      : ""}
 
-                      {/* question footer */}
+                  {/* question footer */}
                   <div className="add-footer">
                      {/* <div className="add-question-bottom-left">
                         <Button 
@@ -313,6 +322,8 @@ function QuestionForm() {
                                  Answer key
                         </Button>
                      </div> */}
+
+                     {/* Copy and Delete Question Option */}
                      <div className="add-question-bottom">
                         <IconButton aria-label="Copy" onClick={()=>{copyQuestion(i)}}>
                               <FilterNoneIcon/>
@@ -338,6 +349,8 @@ function QuestionForm() {
       <br></br>
       <div className="section">
       <div className="question-title-section">
+
+      {/* Document Name and Document Description Form Input */}
          <div className="question-form-top">
              <input type="text"
                className="question-form-top-name"
@@ -356,6 +369,8 @@ function QuestionForm() {
             />
          </div>
       </div>
+
+      {/* Default Add question Box icon */}
       <div className="question-edit">
          {questions && questions.length < 1 ? (
             <div class="default-add-question" onClick={addMoreQuestionField}>
@@ -364,7 +379,10 @@ function QuestionForm() {
             </div>)
             : ''}
       </div>
+      {/* Questions Box */}
       {question()}
+
+      {/* Form Action */}
       <div className="save-form">
             <Button 
                variant="contained" 

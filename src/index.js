@@ -3,14 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { StateProvider } from './components/store/stateprovider';
-import reducer, { initialState } from '../src/components/reducer/reducer';
+import reducer from './store/reducer';
+import { Provider } from "react-redux"
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { watchSetQuestions } from "./sagas/saga"
 
+//create saga middleware
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducer,applyMiddleware(sagaMiddleware));
+
+//conect saga active saga
+sagaMiddleware.run(watchSetQuestions)
 ReactDOM.render(
   <React.StrictMode>
-     <StateProvider initialState={initialState} reducer={reducer}>
-        <App />
-    </StateProvider>
+      <Provider store={store}>
+          <App />
+        </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

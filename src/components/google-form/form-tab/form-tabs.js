@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React from "react"
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -9,6 +9,7 @@ function FormTabs() {
       setValue(newValue);
     };
       return (
+         // Used Tab for create form
          <div>
             <Paper square>
                <Tabs
@@ -20,7 +21,6 @@ function FormTabs() {
                aria-label="disabled tabs example"
                >
                   <Tab label="Create your own Form" />
-                  {/* <Tab label="Responses" disabled /> */}
                </Tabs>
             </Paper>
          </div>

@@ -39,10 +39,10 @@ const Header = () =>  {
    const classes = useStyles();
    const history = useHistory()
    
+   // Get Data from localstorage instead
    let formData = localStorage.getItem('form_data')
    try {
-      if(formData.length > 0)
-      {
+      if(formData.length > 0) {
          formData = JSON.parse(formData);
       }
    } catch(e) {
@@ -51,12 +51,14 @@ const Header = () =>  {
    if(!formData) {
       formData = [];
    }
+
+   // Get Submitted Response Count from localstorage
    let submiitedResponseCount = localStorage.getItem('submitted_respose_count')
    const createform = () => {
       const id = uuid()
       history.push("/form/"+id);
    }
-
+   
    return (
       <div>
          <div className="header">
@@ -64,6 +66,7 @@ const Header = () =>  {
             <span className="total-response-text">Total Response is : {formData && formData.length}</span>
             <Button onClick={createform} variant="contained" color="primary">Add Form</Button>
          </div>
+         {/* Display Table of User Form*/}
          <div className="table-container">
             <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table">

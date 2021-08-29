@@ -1,3 +1,4 @@
+//Initial State
 export const initialState = {
    questions:[{questionText: "Question", questionType:"radio", options : [{optionText: "Option 1"}], open: true, required:false}],
    questionType:"radio",
@@ -5,14 +6,15 @@ export const initialState = {
    doc_desc:" add the description "
 }
 
+//Action Types
 export const actionTypes = {
-    SET_QUESTIONS:"SET_QUESTIONS",
+   SET_QUESTIONS_ASYNC:"SET_QUESTIONS_ASYNC",
 }
 
+//Reducer function that updates store
 const reducer = (state = initialState, action)=>{
-   console.log(action);
    switch(action.type){
-       case actionTypes.SET_QUESTIONS : 
+       case actionTypes.SET_QUESTIONS_ASYNC : 
            return {
                ...state,
                 questions:action.payload.questions,

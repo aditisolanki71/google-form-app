@@ -1,8 +1,14 @@
 .header {
    text-align: right;
    margin: 10px;
+   margin-right: 20px;
 }
 .total-response-text {
    font-size: 20px;
    margin-right: 10px;
+   border:1px solid gray
+}
+.table-container {
+   margin:20px;
+
 }

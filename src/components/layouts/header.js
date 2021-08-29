@@ -62,8 +62,8 @@ const Header = () =>  {
    return (
       <div>
          <div className="header">
-            <span className="total-response-text">Total Submitted Response is : {submiitedResponseCount || 0 }</span>
-            <span className="total-response-text">Total Response is : {formData && formData.length}</span>
+            <Button variant="contained" style={{marginRight: '10px'}}>Total Submitted Response is : {submiitedResponseCount || 0 }</Button>
+            <Button variant="contained" style={{marginRight: '10px'}}>Total Response is : {formData && formData.length}</Button>
             <Button onClick={createform} variant="contained" color="primary">Add Form</Button>
          </div>
          {/* Display Table of User Form*/}
@@ -72,7 +72,7 @@ const Header = () =>  {
             <Table className={classes.table} aria-label="customized table">
             <TableHead>
                <TableRow>
-                  <StyledTableCell>UUid</StyledTableCell>
+                  <StyledTableCell>UUID</StyledTableCell>
                   <StyledTableCell>Name</StyledTableCell>
                   <StyledTableCell>Description</StyledTableCell> 
                </TableRow>

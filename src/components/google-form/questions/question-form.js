@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import { Accordion } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -9,38 +9,23 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import SubjectIcon from '@material-ui/icons/Subject';
-import CropOriginalIcon from '@material-ui/icons/CropOriginal';
 import ShortTextIcon from '@material-ui/icons/ShortText';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import Switch from '@material-ui/core/Switch';
 import {BsTrash} from "react-icons/bs"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useParams } from "react-router";
 import { useHistory } from 'react-router-dom';
+import FormControl from '@material-ui/core/FormControl';
 import { actionTypes } from '../../reducer/reducer'
 import { useStateValue } from '../../store/stateprovider'
 import uuid from "react-uuid"
 import './questions-form.css'
 function QuestionForm() {
      var history = useHistory()
-   const [questions,setQuestions] =useState([
-      // {
-      //    questionName: "what is your name",
-      //    questionType: "radio",
-      //    options: [
-      //          {optionName: "name1"},
-      //          {optionName: "name2"},
-      //          {optionName: "name3"}],
-      //    open:true,
-      //    required:false,
-      //    answer:false,
-      //    answerKey:"",
-      //    point:0
-      // }
-   ]
+   const [questions,setQuestions] =useState([]
    ); 
 
    const [documentName,setDocName] =useState("Add Document Name"); 
@@ -58,12 +43,24 @@ function QuestionForm() {
    /*User change question Type at the time of creation*/
    const handleQuestionType = (i,type) => {
       setQuestions([...questions],questions[i].questionType  = type)
+      if(type === 'text') 
+      {
+         var que = [...questions];
+         que[i].options.length = 1; 
+         setQuestions(que);
+      }
    }
 
     /*User change Option Name at the time of creation*/
-   const handleOptionValue = (option,que_index,opt_index) => {
+   const handleOptionValue = (option,que_index,opt_index,que_type) => {
       var optionQuestion = [...questions];
-      optionQuestion[que_index].options[opt_index].optionName = option
+      if(que_type == 'text') 
+      {
+         optionQuestion[que_index].options[0].optionName = option
+      }
+      else {
+         optionQuestion[que_index].options[opt_index].optionName = option
+      }
       setQuestions(optionQuestion);
    }
 
@@ -103,8 +100,8 @@ function QuestionForm() {
    function addMoreQuestionField(){
       setQuestions(questions => [...questions, {
             questionName: "Add Question",
-            questionType:"radio", 
-            options : [{optionName: "Option 1"}], 
+            questionType: "radio", 
+            options : [{optionName: "Enter Option"}], 
             open: true, 
             required:false
          }]);
@@ -145,6 +142,10 @@ function QuestionForm() {
                                                          }]))
          alert("Your Form has been designed")
          history.push("/response")
+      }
+
+      const handleCancel = () => {
+         history.push("/")
       }
       const question = () => {
          return questions && questions.map((q,i) => (
@@ -203,29 +204,35 @@ function QuestionForm() {
                         onChange={(e)=>{handleQuestionValue(e.target.value, i)}}
                      />
                         {/* question type dropdown */}
-                           <Select placeholder="select question type" className="select" style={{color:"gray",fontSize:"20px"}} >
+                        <FormControl>
+                           <Select
+                             value={q.questionType} 
+                              className="select"
+                              style={{color:"gray",fontSize:"20px"}} 
+                           >
                               <MenuItem 
                                  id="text" 
-                                 value="Text" 
+                                 value="text" 
                                  onClick= {()=>{handleQuestionType(i,"text")}}> 
                                     <SubjectIcon className="paragraph-item" />
                                        Text
                               </MenuItem>
                               <MenuItem 
                                  id="checkbox"  
-                                 value="Checkbox" 
+                                 value="checkbox" 
                                  onClick= {()=>{handleQuestionType(i,"checkbox")}}>
                                     <CheckBoxIcon className="checkbox-item" checked /> 
                                        Checkbox
                               </MenuItem>
                               <MenuItem 
                                  id="radio" 
-                                 value="Radio" 
+                                 value="radio" 
                                  onClick= {()=>{handleQuestionType(i,"radio")}}> 
                                     <Radio style={{marginRight:"8px",color:"#70757a"}}  checked/> 
                                        Radio
                               </MenuItem>
                            </Select>
+                     </FormControl>
                   </div>   
                   {q.options.map((op, j)=>(
                      <div className="add-question-body" key={j}>
@@ -233,11 +240,9 @@ function QuestionForm() {
                         {(q.questionType!="text") 
                            ? <input
                               type={q.questionType}  
-                              // style={{marginRight:"10px"}}
                               className="quesion-body-type"
                               /> 
                            : <ShortTextIcon
-                           //  style={{marginRight:"10px"}}
                             className="quesion-body-type"
                             />
                         }
@@ -248,7 +253,7 @@ function QuestionForm() {
                               className="text-input"
                               placeholder="option"
                               value={q.options[j].optionName}
-                              onChange={(e)=>{handleOptionValue(e.target.value, i, j)}}
+                              onChange={(e)=>{handleOptionValue(e.target.value, i, j,q.questionType)}}
                            />
                         </div>
                         {/* <CropOriginalIcon style={{color:"#5f6368"}}/> */}
@@ -259,7 +264,7 @@ function QuestionForm() {
                   ))}
 
                   {/* you can not add more than 4 option */}
-                  {q.options.length < 5 ? (
+                  {q.options.length < 5 && q.questionType != "text" ? (
                      <div className="add-question-body">
                         <FormControlLabel 
                            disabled 
@@ -272,11 +277,10 @@ function QuestionForm() {
                                     disabled
                               /> 
                            : <ShortTextIcon 
-                                 // style={{marginRight:"10px"}} 
                                  className="quesion-body-type"
                               />
                            }
-                           label={<div>
+                           label={(<div>
                                  <input 
                                     type="text" 
                                     className="text-input" 
@@ -284,16 +288,16 @@ function QuestionForm() {
                                     //className="add-option-input" 
                                     placeholder="Add other"
                                  />
-                                 <Button 
+                                 <Button
                                     size="small" 
                                     onClick={()=>{addOption(i)}} 
                                      style={{textTransform: 'none',color:"blue",fontSize:"14px",fontWeight:"600"}}
                                     //  className="add-option-btn"
                                     >
-                                    Add Option
+                                       Add Option
                                  </Button>
                               </div>
-                           }
+                        )}
                         /> 
                      </div>)
                      : ""}
@@ -367,8 +371,17 @@ function QuestionForm() {
                color="primary" 
                onClick={handleSave} 
                style={{fontSize:"14px"}}
+               disabled={questions && questions.length < 1}
             >
             Save
+            </Button>
+            <Button 
+               variant="contained" 
+               color="gray" 
+               onClick={handleCancel} 
+               style={{fontSize:"14px", marginLeft: "10px"}}
+            >
+            back
             </Button>
       </div>
       </div>

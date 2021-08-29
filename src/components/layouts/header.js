@@ -38,18 +38,6 @@ const useStyles = makeStyles({
 const Header = () =>  {
    const classes = useStyles();
    const history = useHistory()
-   let total_response = localStorage.getItem('response_array')
-   try {
-      if(total_response.length > 0)
-      {
-         total_response = JSON.parse(total_response);
-      }
-   } catch(e) {
-      console.log('err',e)
-   }
-   if(!total_response) {
-      total_response = [];
-   }
    
    let formData = localStorage.getItem('form_data')
    try {
@@ -63,6 +51,7 @@ const Header = () =>  {
    if(!formData) {
       formData = [];
    }
+   let submiitedResponseCount = localStorage.getItem('submitted_respose_count')
    const createform = () => {
       const id = uuid()
       history.push("/form/"+id);
@@ -71,11 +60,11 @@ const Header = () =>  {
    return (
       <div>
          <div className="header">
-            {/* <span className="total-response-text">Total Response is : {total_response?.length}</span> */}
+            <span className="total-response-text">Total Submitted Response is : {submiitedResponseCount || 0 }</span>
             <span className="total-response-text">Total Response is : {formData?.length}</span>
             <Button onClick={createform} variant="contained" color="primary">Add Form</Button>
          </div>
-         <div className="container">
+         <div className="table-container">
             <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table">
             <TableHead>

@@ -9,12 +9,12 @@ const User_form = () => {
    var history = useHistory()
    var [answer,setAnswer] = useState([])
    var [{questions,doc_name,doc_desc},dispatch] = useStateValue()
-   
+
    // handle event for radio type
    const select = (que,option) => {
-   var k =answer.findIndex((ele)=>(ele.question == que))
-   answer[k].answer=option
-   setAnswer(answer)
+      var k =answer.findIndex((ele)=>(ele.question == que))
+      answer[k].answer=option
+      setAnswer(answer)
   }
 
    useEffect(() => {
@@ -61,7 +61,6 @@ const User_form = () => {
    //submit event
       const submit = () => {
        localStorage.setItem('response_array',JSON.stringify(answer))
-      
       let total_response = localStorage.getItem('response_array')
       try {
          if(total_response.length > 0)
@@ -77,8 +76,20 @@ const User_form = () => {
       }
 
       localStorage.setItem('response_array',JSON.stringify([...total_response,{answer:answer,docname: doc_name,docdesc:doc_desc}]))
-       alert("your response has been submitted successfully")
+      var response_count = localStorage.getItem('submitted_respose_count')
+       if(!response_count) {
+         response_count = 0
+         localStorage.setItem('submitted_respose_count',parseInt(response_count)+1)
+      }
+      else {
+         localStorage.setItem('submitted_respose_count',parseInt(response_count)+1)
+      }
+      alert("your response has been submitted successfully")
       history.push(`/`)
+   }
+
+   const handleCancel = () => {
+      history.push("/")
    }
 
     return (  
@@ -153,6 +164,7 @@ const User_form = () => {
             }
             <div className="user-form-submit">
                <Button  variant="contained" color="primary" onClick={submit} style={{fontSize:"14px"}}>Submit</Button>
+               <Button variant="contained" color="gray" onClick={handleCancel} style={{fontSize:"14px", marginLeft: "10px"}}>Cancel</Button>
             </div>  
             </div>
         </div>

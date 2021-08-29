@@ -61,7 +61,7 @@ const Header = () =>  {
       <div>
          <div className="header">
             <span className="total-response-text">Total Submitted Response is : {submiitedResponseCount || 0 }</span>
-            <span className="total-response-text">Total Response is : {formData?.length}</span>
+            <span className="total-response-text">Total Response is : {formData && formData.length}</span>
             <Button onClick={createform} variant="contained" color="primary">Add Form</Button>
          </div>
          <div className="table-container">

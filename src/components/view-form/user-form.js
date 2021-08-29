@@ -25,7 +25,7 @@ const User_form = () => {
          })   
       })
       questions.map((q,qindex)=>{
-         quest.push(    {"header": q.questionName, "key": q.questionName })
+         quest.push({"header": q.questionName, "key": q.questionName })
       })
    },[])
 
@@ -59,7 +59,7 @@ const User_form = () => {
    }
 
    //submit event
-      const submit = () => {
+      const submit = () => { 
        localStorage.setItem('response_array',JSON.stringify(answer))
       let total_response = localStorage.getItem('response_array')
       try {
@@ -110,7 +110,7 @@ const User_form = () => {
                            {qindex+1}.  {question.questionName}
                         </Typography>
                         {
-                            question.options.map((ques,index)=>(     
+                            question.options.map((ques,index)=>(
                               <div key={index} style={{marginBottom:"5px"}}>
                                   <div style={{display: 'flex'}}>
                                     <div className="form-check">
@@ -163,8 +163,18 @@ const User_form = () => {
                 ))
             }
             <div className="user-form-submit">
-               <Button  variant="contained" color="primary" onClick={submit} style={{fontSize:"14px"}}>Submit</Button>
-               <Button variant="contained" color="gray" onClick={handleCancel} style={{fontSize:"14px", marginLeft: "10px"}}>Cancel</Button>
+               <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={submit}
+                  style={{fontSize:"14px"}}
+               >Submit</Button>
+               <Button 
+                  variant="contained" 
+                  color="gray" 
+                  onClick={handleCancel} 
+                  style={{fontSize:"14px", marginLeft: "10px"}}
+               >Cancel</Button>
             </div>  
             </div>
         </div>

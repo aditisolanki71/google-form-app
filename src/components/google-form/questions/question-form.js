@@ -156,15 +156,14 @@ function QuestionForm() {
          if(!getData) {
             getData = [];
          }
-   
-          localStorage.setItem('form_data',JSON.stringify([...getData,{uuid:uuid(),
+          localStorage.setItem('form_data',JSON.stringify([...getData,{uuid:id,
                                                             form_name:documentName,
                                                             form_description:documentDescription,
                                                             questions:questions
                                                          }]))
-         setOpen(true);
-         alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/form/${id}`)
 
+       let aditi = localStorage.getItem('form_data')
+         alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/response/${id}`)
          //After Designed Form redirect ro response page so that user get main question form
          history.push(`/response/${id}`)
       }

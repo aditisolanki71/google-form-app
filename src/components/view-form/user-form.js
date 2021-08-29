@@ -2,21 +2,40 @@ import { Button, Typography } from '@material-ui/core'
 import React ,{useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
 import { useSelector} from "react-redux"
+import { useParams } from "react-router";
 import "./user-form.css"
 
 const UserForm = () => {
    var quest = [];
    var history = useHistory()
 
+   let { id } = useParams();
    // Store answer in state
    var [answer,setAnswer] = useState([])
 
    //Fetch Questions ,DocName and DocDescription from Redux
-   const questions = useSelector((state) => state.questions)
-   const doc_name = useSelector((state) => state.doc_name)
-   const doc_desc = useSelector((state) => state.doc_desc)
+   var questions = useSelector((state) => state.questions)
+   var doc_name = useSelector((state) => state.doc_name)
+   var doc_desc = useSelector((state) => state.doc_desc)
 
    useEffect(() => {
+      let googleFormData = localStorage.getItem('form_data');
+      try {
+         if(googleFormData.length > 0) {
+            googleFormData = JSON.parse(googleFormData);
+         }
+      } catch(e) {
+         console.log('err',e)
+      }
+      if(!googleFormData) {
+         googleFormData = [];
+      }
+      const getFormData = googleFormData ? googleFormData.find((g) => g.uuid === id) : ''
+      if(getFormData) {
+         questions = getFormData.questions;
+         doc_name = getFormData.form_name;
+         doc_desc =getFormData.form_description;
+      }
       questions.map((q)=>{
          answer.push({
             "question": q.questionName,
@@ -96,7 +115,6 @@ const UserForm = () => {
    const handleCancel = () => {
       history.push("/")
    }
-
     return (  
       <div className="submit">
         <div className="user-form">
@@ -107,7 +125,7 @@ const UserForm = () => {
                     <Typography style={{fontSize:"15px"}} >{doc_desc}</Typography>
                 </div>
                 {/* question and option */}
-                {questions.length > 1 ?
+                {
                   questions.map((question,qindex)=>(
                      <div className="user-form-questions">
                         <Typography 
@@ -166,18 +184,16 @@ const UserForm = () => {
                     }
                   </div>
                 ))
-            : (<div>Create your Form and Submit than you can view Form</div>)}
+         }
 
             {/* Form Action */}
-            <div className="user-form-submit">
-            {questions.length > 1 ?
+            <div className="user-form-submit">  
                <Button
                   variant="contained"
                   color="primary"
                   onClick={submit}
                   style={{fontSize:"14px"}}
                >Submit</Button>
-            : ""}
                <Button 
                   variant="contained" 
                   color="gray" 

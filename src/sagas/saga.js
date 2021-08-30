@@ -1,5 +1,5 @@
 import delay from "redux-saga"
-import { takeLatest, put } from "redux-saga/effects"   
+import { takeEvery, put } from "redux-saga/effects"   
 
 //worker saga
 function* setQuestionsAsync(data) {
@@ -10,5 +10,5 @@ function* setQuestionsAsync(data) {
 
 //watcher saga
 export function* watchSetQuestions(data) {
-   yield takeLatest('SET_QUESTIONS_ASYNC',setQuestionsAsync(data));
+   yield takeEvery('SET_QUESTIONS_ASYNC',setQuestionsAsync(data));
 }

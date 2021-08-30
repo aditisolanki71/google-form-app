@@ -162,7 +162,6 @@ function QuestionForm() {
                                                             questions:questions
                                                          }]))
 
-       let aditi = localStorage.getItem('form_data')
          alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/response/${id}`)
          //After Designed Form redirect ro response page so that user get main question form
          history.push(`/response/${id}`)

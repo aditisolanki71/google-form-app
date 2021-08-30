@@ -14,11 +14,19 @@ const UserForm = () => {
    var [answer,setAnswer] = useState([])
 
    //Fetch Questions ,DocName and DocDescription from Redux
-   var questions = useSelector((state) => state.questions)
-   var doc_name = useSelector((state) => state.doc_name)
-   var doc_desc = useSelector((state) => state.doc_desc)
+   // var questions = useSelector((state) => state.questions)
+   // var doc_name = useSelector((state) => state.doc_name)
+   // var doc_desc = useSelector((state) => state.doc_desc)
 
+   // instead of fetching data from redux i use localstorage bcoz when we copy link 
+   // to new tab we cannot get data using redux so i prefer to use localstorage here
+
+   //define state
+   const [questions,setQuestions] = useState([])
+   const [doc_name,setdoc_name] = useState('') 
+   const [doc_desc,setdoc_desc] = useState('')
    useEffect(() => {
+      //get data from localstorage and set state
       let googleFormData = localStorage.getItem('form_data');
       try {
          if(googleFormData.length > 0) {
@@ -29,13 +37,23 @@ const UserForm = () => {
       }
       if(!googleFormData) {
          googleFormData = [];
-      }
+      } 
+
       const getFormData = googleFormData ? googleFormData.find((g) => g.uuid === id) : ''
       if(getFormData) {
-         questions = getFormData.questions;
-         doc_name = getFormData.form_name;
-         doc_desc =getFormData.form_description;
+
+         // questions = getFormData.questions;
+         // doc_name = getFormData.form_name;
+         // doc_desc =getFormData.form_description;
+
+         //set sate of questions,form name and form description
+         setQuestions(getFormData.questions);
+         setdoc_name(getFormData.form_name);  
+         setdoc_desc(getFormData.form_description);
       }
+
+      // setQuestions(getFormData.questions);
+      //push answer into questions array
       questions.map((q)=>{
          answer.push({
             "question": q.questionName,
@@ -45,7 +63,8 @@ const UserForm = () => {
       questions.map((q,qindex)=>{
          quest.push({"header": q.questionName, "key": q.questionName })
       })
-   },[])
+ 
+   },[doc_name])
 
    // handle event for radio type
    const select = (que,option) => {

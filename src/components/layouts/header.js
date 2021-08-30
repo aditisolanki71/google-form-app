@@ -55,7 +55,7 @@ const Header = () =>  {
    }
 
    const handleView = (data) => {
-      history.push(`/form/${data.uuid}`)
+      history.push(`/response/${data.uuid}`)
    }
    // Get Submitted Response Count from localstorage
    let submiitedResponseCount = localStorage.getItem('submitted_respose_count')
@@ -77,6 +77,7 @@ const Header = () =>  {
             <Table className={classes.table} aria-label="customized table">
             <TableHead>
                <TableRow>
+                  <StyledTableCell>Form Url</StyledTableCell>
                   <StyledTableCell>UUID</StyledTableCell>
                   <StyledTableCell>Name</StyledTableCell>
                   <StyledTableCell>Description</StyledTableCell>
@@ -86,6 +87,9 @@ const Header = () =>  {
             <TableBody>
                {formData.map((row) => (
                   <StyledTableRow key={row.uuid}>
+                  <StyledTableCell component="th" scope="row" onClick={() => handleView(row)}>
+                     {`http://localhost:3000/response/${row.uuid}`}
+                  </StyledTableCell>
                   <StyledTableCell component="th" scope="row">
                      {row.uuid}
                   </StyledTableCell>

@@ -8,13 +8,13 @@ export const initialState = {
 
 //Action Types
 export const actionTypes = {
-   SET_QUESTIONS_ASYNC:"SET_QUESTIONS_ASYNC",
+   SET_QUESTIONS:"SET_QUESTIONS",
 }
 
 //Reducer function that updates store
 const reducer = (state = initialState, action)=>{
    switch(action.type){
-       case actionTypes.SET_QUESTIONS_ASYNC : 
+       case actionTypes.SET_QUESTIONS : 
            return {
                ...state,
                 questions:action.payload.questions,

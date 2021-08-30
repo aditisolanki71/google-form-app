@@ -162,7 +162,10 @@ function QuestionForm() {
                                                             questions:questions
                                                          }]))
 
-         alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/response/${id}`)
+         // For Local Server
+         //alert(`Your Form has been designed Copy this link to view form :- http://localhost:3000/response/${id}`)
+         // For Heroku Server
+         alert(`Your Form has been designed. Copy this link to view form :- https://google-form-heroku-project.herokuapp.com/response/${id}`)
          //After Designed Form redirect ro response page so that user get main question form
          history.push(`/response/${id}`)
       }

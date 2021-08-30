@@ -88,7 +88,11 @@ const Header = () =>  {
                {formData.map((row) => (
                   <StyledTableRow key={row.uuid}>
                   <StyledTableCell component="th" scope="row" onClick={() => handleView(row)}>
-                     {`http://localhost:3000/response/${row.uuid}`}
+                     {/* For Local Server */}
+                     {/* {`http://localhost:3000/response/${row.uuid}`} */}
+
+                     {/* For Heroku Server */}
+                     {`https://google-form-heroku-project.herokuapp.com/response/${row.uuid}`}
                   </StyledTableCell>
                   <StyledTableCell component="th" scope="row">
                      {row.uuid}
